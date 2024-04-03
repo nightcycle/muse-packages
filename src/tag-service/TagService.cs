@@ -102,6 +102,16 @@ namespace TagService
 			}
 		}
 
+		public void Deregister(Actor actor){
+			if (ActorTagRegistry.TryGetValue(actor, out List<string> tags)){
+				foreach (string tag in tags){
+					if (HasTag(actor, tag)){
+						RemoveTag(actor, tag);
+					}
+				}
+			}
+		}
+		
 		public void Start(){
 			Muse.ForEachActor(Register);
 		}
