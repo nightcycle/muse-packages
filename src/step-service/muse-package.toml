@@ -1,0 +1,5 @@
+deprecated = false
+public = true
+dependencies=[
+	"https://github.com/nightcycle/muse-package-manager/releases/tag/v1.0.0/src/signal"
+]
