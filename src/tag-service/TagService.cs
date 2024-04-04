@@ -20,8 +20,10 @@ namespace TagService
 
 		public void SetOnTagAdded(string tag, Action<Actor> callback){
 			OnTagAddedCallbackRegistry[tag] = callback;
+
 			if (TagActorRegistry.TryGetValue(tag, out List<Actor> actors)){
-				foreach (Actor actor in actors){
+				List<Actor> actorsCopy = new(actors);
+				foreach (Actor actor in actorsCopy){
 					callback(actor);
 				}
 			}
@@ -94,6 +96,7 @@ namespace TagService
 
 		public void Register(Actor actor){
 			if (ActorTagRegistry.ContainsKey(actor) == false){
+				
 				foreach (string tag in InitialTags){
 					if (actor.HasTag(tag)){
 						AddTag(actor, tag);
@@ -104,30 +107,30 @@ namespace TagService
 
 		public void Deregister(Actor actor){
 			if (ActorTagRegistry.TryGetValue(actor, out List<string> tags)){
-				foreach (string tag in tags){
+				List<string> tagsCopy = new(tags);
+				foreach (string tag in tagsCopy){
 					if (HasTag(actor, tag)){
 						RemoveTag(actor, tag);
 					}
 				}
 			}
 		}
-		
+
 		public void Start(){
-			Muse.ForEachActor(Register);
+			Muse.ForEachActor((Actor actor) => {
+				Register(actor);	
+			});
 		}
 
 		// set up as singleton
-		private static TagService instance;
+		private static readonly TagService instance = new TagService();
 		public static TagService Instance
 		{
 			get
 			{
-				instance ??= new TagService();
 				return instance;
 			}
 		}
-		private TagService(){
-
-		}
+		private TagService(){}
 	}
 }
