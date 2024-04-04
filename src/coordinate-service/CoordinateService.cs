@@ -10,7 +10,6 @@ namespace CoordinateService
 	public class CoordinateService
 	{
 
-		private static readonly CoordinateService instance = new CoordinateService();
 		private readonly float XDist;
 		private readonly float YDist;
 		private readonly float ZDist;
@@ -24,15 +23,6 @@ namespace CoordinateService
 		private Actor YRef;
 		private Actor ZRef;
 		private Actor OriginRef;
-
-		// set up as singleton
-		public static CoordinateService Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
 
 		// https://en.wikipedia.org/wiki/True-range_multilateration#Three_Cartesian_dimensions,_three_measured_slant_ranges
 		public Vector3 GetPosition(Actor actor){
@@ -76,6 +66,15 @@ namespace CoordinateService
 			}
 		}
 
+		private static CoordinateService instance;
+		public static CoordinateService Instance
+		{
+			get
+			{
+				instance ??= new CoordinateService();
+				return instance;
+			}
+		}
 		private CoordinateService(){
 			
 			Muse.ForEachActor((Actor actor) => {
