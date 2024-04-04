@@ -123,11 +123,12 @@ namespace TagService
 		}
 
 		// set up as singleton
-		private static readonly TagService instance = new TagService();
+		private static TagService instance;
 		public static TagService Instance
 		{
 			get
 			{
+				instance ??= new TagService();
 				return instance;
 			}
 		}
