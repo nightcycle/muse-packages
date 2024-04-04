@@ -78,7 +78,7 @@ namespace TagService
 			}
 		}
 
-		public string[] GetTags(Actor actor, string tag){
+		public string[] GetTags(Actor actor){
 			if (ActorTagRegistry.ContainsKey(actor) == true){
 				return [.. ActorTagRegistry[actor]];
 			}else{
