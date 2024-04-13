@@ -1,3 +1,4 @@
 deprecated = false
-public = true
-dependencies=[]
+
+[dependencies]
+Option="https://github.com/nightcycle/muse-packages/releases/tag/v0.1.0/src/option"

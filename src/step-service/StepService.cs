@@ -9,7 +9,7 @@
 // 	Debug.Log(LogLevel.Display, $"step {deltaTime}!");
 // });
 //
-
+using System;
 using MuseDotNet.Framework;
 using Packages;
 namespace StepService
@@ -19,6 +19,31 @@ namespace StepService
 		private static readonly StepService instance = new StepService();
 		public Signal<double> OnStep = new();
 		public double Time = 0;
+
+		private bool HasStarted = false;
+		private readonly Timer Timer = new();
+		private double LastUpdate = 0;
+
+
+		public void Start(Actor volume){
+			if (!HasStarted){
+				HasStarted = true;
+				Timer.Start();
+				volume.SetOnActorSpawnedCallback((Actor spawnedActor) => {
+					Time = Timer.ElapsedSeconds;
+
+					double deltaTime = Time - LastUpdate;
+					if (deltaTime > 0.005){
+						LastUpdate = Time;
+						OnStep.Fire(deltaTime);
+					}
+
+					spawnedActor.Remove();
+				});
+			}else{
+				throw new Exception("'StepService.Instance.Start()' has already been called");
+			}
+		}
 
 		// set up as singleton
 		private static StepService instance;
@@ -30,43 +55,6 @@ namespace StepService
 				return instance;
 			}
 		}
-
-
 		private StepService(){}
-	}
-	
-
-	public class VolumeScriptNameHere : Spawner
-	{
-		readonly Timer Timer = new();
-		double LastUpdate = 0;
-
-		protected override void OnBegin()
-		{
-			base.OnBegin();
-			Timer.Start();
-		}
-
-		protected override void OnEnd()
-		{
-			base.OnEnd();
-		}
-
-		public override Actor Spawn()
-		{
-
-			StepService.Instance.Time = Timer.ElapsedSeconds;
-			double deltaTime = StepService.Instance.Time - LastUpdate;
-			if (deltaTime > 0.005){
-				LastUpdate = StepService.Instance.Time;
-				StepService.Instance.OnStep.Fire(deltaTime);
-			}
-
-
-			Actor actor = base.Spawn();
-			actor.Remove();
-
-			return actor;
-		}
 	}
 }

@@ -10,26 +10,37 @@ namespace CoordinateService
 	public class CoordinateService
 	{
 
-		private readonly float XDist;
-		private readonly float YDist;
-		private readonly float ZDist;
+		private float XDist = 0;
+		private float YDist = 0;
+		private float ZDist = 0;
 
-		private Vector3 Origin;
-		private Vector3 XAxis;
-		private Vector3 YAxis;
-		private Vector3 ZAxis;
+		private Vector3 Origin = new Vector3(0, 0, 0);
+		private Vector3 XAxis = new Vector3(0, 0, 0);
+		private Vector3 YAxis = new Vector3(0, 0, 0);
+		private Vector3 ZAxis = new Vector3(0, 0, 0);
 
-		private Actor XRef;
-		private Actor YRef;
-		private Actor ZRef;
-		private Actor OriginRef;
+		private Option<Actor> XRef = new();
+		private Option<Actor> YRef = new();
+		private Option<Actor> ZRef = new();
+		private Option<Actor> OriginRef = new();
+
+		private bool HasStarted = false;
 
 		// https://en.wikipedia.org/wiki/True-range_multilateration#Three_Cartesian_dimensions,_three_measured_slant_ranges
 		public Vector3 GetPosition(Actor actor){
-			float rO = actor.GetDistance(this.OriginRef);
-			float rX = actor.GetDistance(this.XRef);
-			float rY = actor.GetDistance(this.YRef);
-			float rZ = actor.GetDistance(this.ZRef);
+			if (!HasStarted){
+				throw new Exception("'CoordinateService.Instance.Start()' hasn't been called");
+			}
+
+			Actor originRef = this.OriginRef.Get();
+			Actor xRef = this.XRef.Get();
+			Actor yRef = this.YRef.Get();
+			Actor zRef = this.ZRef.Get();
+
+			float rO = actor.GetDistance(originRef);
+			float rX = actor.GetDistance(xRef);
+			float rY = actor.GetDistance(yRef);
+			float rZ = actor.GetDistance(zRef);
 
 			// Debug.Log(LogLevel.Display, $"rO={rO}, r1={rX}, r2={rY}, rZ={rZ}");
 
@@ -66,6 +77,34 @@ namespace CoordinateService
 			}
 		}
 
+		public void Start(
+			Actor origin,
+			Actor xRef,
+			Actor yRef,
+			Actor zRef
+		){
+			if (!HasStarted){
+				OriginRef.Set(origin);
+				XRef.Set(xRef);
+				YRef.Set(yRef);
+				ZRef.Set(zRef);
+
+				XDist = origin.GetDistance(XRef);
+				YDist = origin.GetDistance(yRef);
+				ZDist = origin.GetDistance(zRef);
+
+				Origin = new Vector3(0, 0, 0);
+				XAxis = new Vector3(XDist, 0, 0);
+				YAxis = new Vector3(0, YDist, 0);
+				ZAxis = new Vector3(0, 0, ZDist);
+
+				HasStarted = true;
+			}else{
+				throw new Exception("'CoordinateService.Instance.Start()' has already been called");
+			}
+
+		}
+
 		private static CoordinateService instance;
 		public static CoordinateService Instance
 		{
@@ -75,28 +114,6 @@ namespace CoordinateService
 				return instance;
 			}
 		}
-		private CoordinateService(){
-			
-			Muse.ForEachActor((Actor actor) => {
-				if (actor.HasTag(Tags.XAxis)){
-					this.XRef = actor;
-				}else if (actor.HasTag(Tags.YAxis)){
-					this.YRef = actor;
-				}else if (actor.HasTag(Tags.ZAxis)){
-					this.ZRef = actor;
-				}else if (actor.HasTag(Tags.Origin)){
-					this.OriginRef = actor;
-				}
-			});
-
-			XDist = this.OriginRef.GetDistance(this.XRef);
-			YDist = this.OriginRef.GetDistance(this.YRef);
-			ZDist = this.OriginRef.GetDistance(this.ZRef);
-
-			Origin = new Vector3(0, 0, 0);
-			XAxis = new Vector3(XDist, 0, 0);
-			YAxis = new Vector3(0, YDist, 0);
-			ZAxis = new Vector3(0, 0, ZDist);
-		}
+		private CoordinateService(){}
 	}
 }

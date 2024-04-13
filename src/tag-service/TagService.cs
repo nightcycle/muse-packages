@@ -1,7 +1,7 @@
 // written by CJ_Oyer (@nightcycle)
 // a way to call "GetTags" on an actor
 //
-
+using System;
 using MuseDotNet.Framework;
 namespace TagService
 {
@@ -12,13 +12,13 @@ namespace TagService
 		private readonly Dictionary<string, Action<Actor>> OnTagAddedCallbackRegistry = [];
 		private readonly Dictionary<string, Action<Actor>> OnTagRemovedCallbackRegistry = [];
 
-		private static readonly string[] InitialTags = [
-			"TAG_A",
-			"TAG_B",
-			"TAG_C",
-		];
+		private bool HasStarted = false;
+		private string[] InitialTags = [];
 
 		public void SetOnTagAdded(string tag, Action<Actor> callback){
+			if (!HasStarted){
+				throw new Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			OnTagAddedCallbackRegistry[tag] = callback;
 
 			if (TagActorRegistry.TryGetValue(tag, out List<Actor> actors)){
@@ -30,10 +30,16 @@ namespace TagService
 		}
 
 		public void SetOnTagRemoved(string tag, Action<Actor> callback){
+			if (!HasStarted){
+				throw new Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			OnTagRemovedCallbackRegistry[tag] = callback;
 		}
 
 		public void AddTag(Actor actor, string tag){
+			if (!HasStarted){
+				throw new Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			if (ActorTagRegistry.ContainsKey(actor) == false){
 				ActorTagRegistry[actor] = [];
 			}
@@ -53,6 +59,9 @@ namespace TagService
 		}
 
 		public void RemoveTag(Actor actor, string tag){
+			if (!HasStarted){
+				throw new Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			if (ActorTagRegistry.ContainsKey(actor) == true){
 				ActorTagRegistry[actor].Remove(tag);
 				if (ActorTagRegistry[actor].Count <= 0){
@@ -71,6 +80,9 @@ namespace TagService
 		}
 
 		public bool HasTag(Actor actor, string tag){
+			if (!HasStarted){
+				throw new Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			if (ActorTagRegistry.ContainsKey(actor) == true){
 				return ActorTagRegistry[actor].Contains(tag);
 			}else{
@@ -79,6 +91,9 @@ namespace TagService
 		}
 
 		public string[] GetTags(Actor actor){
+			if (!HasStarted){
+				throw new System.Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			if (ActorTagRegistry.ContainsKey(actor) == true){
 				return [.. ActorTagRegistry[actor]];
 			}else{
@@ -87,6 +102,9 @@ namespace TagService
 		}
 
 		public Actor[] GetTagged(string tag){
+			if (!HasStarted){
+				throw new Exception("TagService hasn't been started, call 'TagService.Instance.Start()'");
+			}
 			if (TagActorRegistry.ContainsKey(tag) == true){
 				return [.. TagActorRegistry[tag]];
 			}else{
@@ -95,8 +113,7 @@ namespace TagService
 		}
 
 		public void Register(Actor actor){
-			if (ActorTagRegistry.ContainsKey(actor) == false){
-				
+			if (HasStarted && ActorTagRegistry.ContainsKey(actor) == false){
 				foreach (string tag in InitialTags){
 					if (actor.HasTag(tag)){
 						AddTag(actor, tag);
@@ -106,7 +123,7 @@ namespace TagService
 		}
 
 		public void Deregister(Actor actor){
-			if (ActorTagRegistry.TryGetValue(actor, out List<string> tags)){
+			if (HasStarted && ActorTagRegistry.TryGetValue(actor, out List<string> tags)){
 				List<string> tagsCopy = new(tags);
 				foreach (string tag in tagsCopy){
 					if (HasTag(actor, tag)){
@@ -116,10 +133,17 @@ namespace TagService
 			}
 		}
 
-		public void Start(){
-			Muse.ForEachActor((Actor actor) => {
-				Register(actor);	
-			});
+		public void Start(string[] initialTags){
+			if (HasStarted == false){
+				InitialTags = initialTags;
+				HasStarted = true;
+
+				Muse.ForEachActor((Actor actor) => {
+					Register(actor);	
+				});
+			}else{
+				throw new Exception("'TagService.Instance.Start()' has already been called");
+			}
 		}
 
 		// set up as singleton
