@@ -43,6 +43,7 @@ namespace Option{
 				return this.Container[0];
 			}
 		}
+	}
         public Option(){}
     }
 }

@@ -3,6 +3,7 @@
 //
 using System;
 using MuseDotNet.Framework;
+using System.Collections.Generic;
 namespace TagService
 {
 	public class TagService
