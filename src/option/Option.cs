@@ -47,12 +47,12 @@ namespace Option{
 		public bool TryGet(out T value){
 			if (GetIfSafe())
 			{
-				value = _value;
+				value = Get();
 				return true;
 			}
 			else
 			{
-				value = null;
+				value = default(T);
 				return false;
 			}
 		}
