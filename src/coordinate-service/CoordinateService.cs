@@ -89,7 +89,7 @@ namespace CoordinateService
 				YRef.Set(yRef);
 				ZRef.Set(zRef);
 
-				XDist = origin.GetDistance(XRef);
+				XDist = origin.GetDistance(xRef);
 				YDist = origin.GetDistance(yRef);
 				ZDist = origin.GetDistance(zRef);
 
