@@ -16,7 +16,6 @@ namespace StepService
 {
 	public class StepService
 	{
-		private static readonly StepService instance = new StepService();
 		public Signal<double> OnStep = new();
 		public double Time = 0;
 

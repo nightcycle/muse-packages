@@ -83,7 +83,7 @@ namespace QuadTree
 				array.Add(node.Value);
 			}
 
-			if (_Subdivisions.GetIfNull() == false)
+			if (_Subdivisions.GetIfEmpty() == false)
 			{
 				List<QuadTree<V>> subs = _Subdivisions.Get();
 				foreach (var sub in subs)
@@ -95,7 +95,7 @@ namespace QuadTree
 
 		private void Subdivide()
 		{
-			if (_Subdivisions.GetIfNull() == false)
+			if (_Subdivisions.GetIfEmpty() == false)
 			{
 				throw new Exception("already subdivided");
 			}
@@ -121,7 +121,7 @@ namespace QuadTree
 			}
 			else
 			{
-				if (_Subdivisions.GetIfNull() == true)
+				if (_Subdivisions.GetIfEmpty() == true)
 				{
 					Subdivide();
 				}
@@ -173,7 +173,7 @@ namespace QuadTree
 					found.Add(node.Value);
 				}
 			}
-			if (_Subdivisions.GetIfNull() == false)
+			if (_Subdivisions.GetIfEmpty() == false)
 			{
 				List<QuadTree<V>> subs = _Subdivisions.Get();
 				foreach (var child in subs)
@@ -208,7 +208,7 @@ namespace QuadTree
 					found.Add(node.Value);
 				}
 			}
-			if (_Subdivisions.GetIfNull() == false)
+			if (_Subdivisions.GetIfEmpty() == false)
 			{
 				List<QuadTree<V>> subs = _Subdivisions.Get();
 				foreach (var child in subs)
@@ -238,7 +238,7 @@ namespace QuadTree
 					found.Add(node.Value);
 				}
 			}
-			if (_Subdivisions.GetIfNull() == false)
+			if (_Subdivisions.GetIfEmpty() == false)
 			{
 				List<QuadTree<V>> subs = _Subdivisions.Get();
 				foreach (var child in subs)
@@ -268,7 +268,7 @@ namespace QuadTree
 					found.Add(node.Value);
 				}
 			}
-			if (_Subdivisions.GetIfNull() == false)
+			if (_Subdivisions.GetIfEmpty() == false)
 			{
 				List<QuadTree<V>> subs = _Subdivisions.Get();
 				foreach (var child in subs)
