@@ -43,6 +43,19 @@ namespace Option{
 				return this.Container[0];
 			}
 		}
+
+		public bool TryGet(out T value){
+			if (GetIfSafe())
+			{
+				value = _value;
+				return true;
+			}
+			else
+			{
+				value = null;
+				return false;
+			}
+		}
 	}
         public Option(){}
     }
