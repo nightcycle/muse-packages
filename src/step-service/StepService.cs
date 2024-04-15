@@ -18,30 +18,22 @@ namespace StepService
 	{
 		public Signal<double> OnStep = new();
 		public double Time = 0;
-
-		private bool HasStarted = false;
 		private readonly Timer Timer = new();
 		private double LastUpdate = 0;
 
-
-		public void Start(Actor volume){
-			if (!HasStarted){
-				HasStarted = true;
+		public Actor OnVolumeSpawnedInvoke(Actor spawnedActor){
+			if (!Timer.IsRunning){
 				Timer.Start();
-				volume.SetOnActorSpawnedCallback((Actor spawnedActor) => {
-					Time = Timer.ElapsedSeconds;
-
-					double deltaTime = Time - LastUpdate;
-					if (deltaTime > 0.005){
-						LastUpdate = Time;
-						OnStep.Fire(deltaTime);
-					}
-
-					spawnedActor.Remove();
-				});
 			}else{
-				throw new Exception("'StepService.Instance.Start()' has already been called");
+				Time = Timer.ElapsedSeconds;
+				double deltaTime = Time - LastUpdate;
+				if (deltaTime > 0.005){
+					LastUpdate = Time;
+					OnStep.Fire(deltaTime);
+				}
 			}
+			spawnedActor.Remove();
+			return spawnedActor;
 		}
 
 		// set up as singleton
