@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-namespace Signal
+namespace SignalProvider
 {
 	// the bound functionality, needs to be disconnected to avoid memory leaks
 	public class SignalConnection<V>(Action<V> onInvoke, Action<SignalConnection<V>> onDisconnectInvoke)

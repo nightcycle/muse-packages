@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-namespace Option
+namespace OptionProvider
 {
 	public class Option<T>{
 		private Dictionary<int, T> Container = [];
@@ -42,4 +42,5 @@ namespace Option
 				return this.Container[0];
 			}
 		}
+	}
 }
