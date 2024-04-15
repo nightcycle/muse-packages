@@ -44,17 +44,29 @@ namespace Option{
 			}
 		}
 
-		public bool TryGet(out T value){
+		public bool TryInvoke(Action<T> onInvoke){
 			if (GetIfSafe())
 			{
-				value = Get();
+				onInvoke.Invoke(Get());
 				return true;
 			}
 			else
 			{
-				value = default(T);
 				return false;
 			}
 		}
+
+		// public bool TryGet(out T value){
+		// 	if (GetIfSafe())
+		// 	{
+		// 		value = Get();
+		// 		return true;
+		// 	}
+		// 	else
+		// 	{
+		// 		value = default(T);
+		// 		return false;
+		// 	}
+		// }
 	}
 }
