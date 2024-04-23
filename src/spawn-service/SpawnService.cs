@@ -59,7 +59,7 @@ namespace UpgradeSystem
 				{
 					Actor spawned = spawnableQueue.Dequeue();
 					spawned.SetActive(true);
-					spawned.TeleportTo(spawned);
+					spawned.TeleportTo(spawnPoint);
 					onSpawnCallback.Invoke(spawned);
 
 					return true;
