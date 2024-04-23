@@ -1,3 +1,4 @@
+// Allows for spawning of arbitrary actors via tag at arbitrary spawn points
 using System;
 using System.Collections.Generic;
 using MuseDotNet.Framework;

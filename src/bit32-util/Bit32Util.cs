@@ -1,3 +1,4 @@
+// doing basic Bit32 functions like in Lua
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
