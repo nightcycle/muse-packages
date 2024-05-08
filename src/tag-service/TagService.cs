@@ -134,14 +134,15 @@ namespace TagService
 			}
 		}
 
-		public void Start(string[] initialTags){
+		public void Start(string[] initialTags, bool skipMassRegistry=false){
 			if (HasStarted == false){
 				InitialTags = initialTags;
 				HasStarted = true;
-
-				Muse.ForEachActor((Actor actor) => {
-					Register(actor);	
-				});
+				if (!skipMassRegistry){
+					Muse.ForEachActor((Actor actor) => {
+						Register(actor);	
+					});
+				}
 			}else{
 				throw new Exception("'TagService.Instance.Start()' has already been called");
 			}
