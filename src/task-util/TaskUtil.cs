@@ -1,4 +1,3 @@
-
 // written by CJ_Oyer (@nightcycle)
 // A way to create threads utilizing the timer callbacks. 
 // Just create a spawner, and have it enqueue whatever it spawns into TaskQueue.Queue

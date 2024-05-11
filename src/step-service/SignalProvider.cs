@@ -1,7 +1,7 @@
 // downloaded from 'https://github.com/nightcycle/muse-packages' and compiled using 'github.com/nightcycle/muse-package-manager'
 
-using System;
 using System.Collections.Generic;
+using System;
 namespace SignalProvider
 {
 	// the bound functionality, needs to be disconnected to avoid memory leaks

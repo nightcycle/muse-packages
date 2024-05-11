@@ -10,3 +10,4 @@
 ./mpm.exe build --input "src/option" --output "test/Option.cs"
 ./mpm.exe build --input "src/maid" --output "test/Maid.cs"
 ./mpm.exe build --input "src/coordinate-service" --output "test/CoordinateService.cs"
+./mpm.exe build --input "src/task-util" --output "test/TagUtil.cs"
