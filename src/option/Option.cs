@@ -32,8 +32,10 @@ namespace Option{
 			OnClear = callback;
 		}
 		public void Clear(){
-			this.Container = [];
-			this.OnClear();
+			if (GetIfSafe()){
+				this.Container = [];
+				this.OnClear();
+			}
 		}
 
 		public T Get(){
