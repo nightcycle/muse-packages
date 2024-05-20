@@ -8,7 +8,20 @@ namespace Option{
 		private Dictionary<int, T> Container = [];
 		private Action<T> OnSet = (T value) => { };
 		private Action OnClear = () => { };
-		public void Set(T value)
+		
+  		public override string ToString()
+		{
+			if (TryGet(out T value))
+			{
+				return $"Option<{value.ToString()}>";
+			}
+			else
+			{
+				return $"Option<null>";
+			}
+		}
+  
+  		public void Set(T value)
 		{
 			this.Container[0] = value;
 			OnSet(value);
