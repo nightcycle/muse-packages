@@ -77,7 +77,7 @@ namespace CoordinateService
 			}
 		}
 
-		public void Start(
+		public void Init(
 			Actor origin,
 			Actor xRef,
 			Actor yRef,
