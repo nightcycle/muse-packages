@@ -80,7 +80,7 @@ namespace DataServiceProvider
 			return decodedData;
 		}
 
-		public void Start(
+		public void Init(
 			Dictionary<string, int> initialData,
 			DataSlice[] slices
 		)
