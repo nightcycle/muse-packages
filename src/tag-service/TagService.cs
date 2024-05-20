@@ -134,7 +134,7 @@ namespace TagService
 			}
 		}
 
-		public void Start(string[] initialTags, bool skipMassRegistry=false){
+		public void Init(string[] initialTags, bool skipMassRegistry=false){
 			if (HasStarted == false){
 				InitialTags = initialTags;
 				HasStarted = true;
