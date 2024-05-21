@@ -1,0 +1,4 @@
+deprecated = false
+
+[dependencies]
+OptionProvider="https://github.com/nightcycle/muse-packages/releases/tag/v0.10.0/src/option"

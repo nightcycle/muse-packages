@@ -1,7 +1,8 @@
-// downloaded from 'https://github.com/nightcycle/muse-packages' and compiled using 'github.com/nightcycle/muse-package-manager'
+// DO NOT EDIT!
+// downloaded from 'https://github.com/nightcycle/muse-packages' and compiled into single script using 'github.com/nightcycle/muse-package-manager'
 
-using System;
 using System.Collections.Generic;
+using System;
 namespace OptionProvider
 {
 	public class Option<T>{
