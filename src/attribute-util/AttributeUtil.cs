@@ -158,11 +158,17 @@ namespace AttributeUtil
 			SetBytesAttribute(actor, key, bytes, characters + 8);
 		}
 
-		public static string GetStringAttribute(Actor actor, string key, int characters = 32)
+		public static string GetStringAttribute(Actor actor, string key, int characters = 32, bool trimNull=true)
 		{
 			byte[] bytes = GetBytesAttribute(actor, key, characters + 8);
 
-			return Encoding.ASCII.GetString(bytes);
+			string result = Encoding.ASCII.GetString(bytes);
+			if (trimNull){
+				return result.Replace("\0", string.Empty);
+			}else{
+				return result;
+			}
+			
 		}
 
 		public static void TestString(Actor actor)
