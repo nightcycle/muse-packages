@@ -8,68 +8,38 @@ namespace UpgradeSystem
 	public class SpawnService
 	{
 		private readonly Dictionary<string, Queue<Actor>> SpawnableRegistry = [];
-		private readonly List<Actor> SpawnPoints = [];
-
 		public void EnqueueSpawnable(string tag, Actor spawnable)
 		{
 			if (SpawnableRegistry.ContainsKey(tag) == false)
 			{
 				SpawnableRegistry[tag] = [];
 			}
-			spawnable.SetOnTimerCallback(() =>
-			{
-				// Debug.Log(LogLevel.Display, $"delayed deactivate = {tag}");
-				if (SpawnableRegistry.ContainsKey(tag) == true)
-				{
-					if (SpawnableRegistry[tag].Contains(spawnable))
-					{
-						spawnable.SetActive(false);
-					}
-				}
-			}, 1, 1, false);
-
+			spawnable.SetActive(false);
 			SpawnableRegistry[tag].Enqueue(spawnable);
 		}
 
-		public bool RegisterSpawnPoint(Actor spawnPoint){
-			if (SpawnPoints.Contains(spawnPoint)){
-				SpawnPoints.Add(spawnPoint);
-				return true;
-			}
-			return false;
+		public bool GetIfTagExists(string tag){
+			return SpawnableRegistry.ContainsKey(tag);
 		}
 
-		public Actor GetRandomSpawnPoint()
-		{
-			Actor[] spawnPoints = SpawnPoints.ToArray();
-			Random rng = new();
 
-			int index = rng.Next(0, spawnPoints.Length - 1);
-			Actor spawnPoint = spawnPoints[index];
-			return spawnPoint;
-		}
-
-		public bool Spawn(string tag, Actor spawnPoint, Action<Actor> onSpawnCallback)
+		public bool TrySpawn(string tag, Actor spawnPoint, out Actor spawnedActor)
 		{
-			if (SpawnableRegistry.ContainsKey(tag) == true)
+			if (SpawnableRegistry.TryGet(out Queue<Actor> spawnableQueue))
 			{
-
-				Queue<Actor> spawnableQueue = SpawnableRegistry[tag];
-
-				if (spawnableQueue.Count > 0)
+				if (spawnableQueue.TryDequeue(out Actor actor))
 				{
-					Actor spawned = spawnableQueue.Dequeue();
-					spawned.SetActive(true);
-					spawned.TeleportTo(spawnPoint);
-					onSpawnCallback.Invoke(spawned);
-
-					return true;
-				}
-				else
-				{
-					Debug.Log(LogLevel.Warning, $"out of spawnable actors with tag {tag}");
+					actor.SetActive(true);
+					bool isTeleportSuccess = actor.TeleportTo(spawnPoint);
+					if (isTeleportSuccess){
+						spawnedActor = actor;
+						return true
+					}else{
+						EnqueueSpawnable(tag, actor);
+					}
 				}
 			}
+			spawnedActor = default(Actor);
 			return false;
 		}
 
