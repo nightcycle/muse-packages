@@ -25,7 +25,7 @@ namespace UpgradeSystem
 
 		public bool TrySpawn(string tag, Actor spawnPoint, out Actor spawnedActor)
 		{
-			if (SpawnableRegistry.TryGet(out Queue<Actor> spawnableQueue))
+			if (SpawnableRegistry.TryGetValue(out Queue<Actor> spawnableQueue))
 			{
 				if (spawnableQueue.TryDequeue(out Actor actor))
 				{
@@ -33,7 +33,7 @@ namespace UpgradeSystem
 					bool isTeleportSuccess = actor.TeleportTo(spawnPoint);
 					if (isTeleportSuccess){
 						spawnedActor = actor;
-						return true
+						return true;
 					}else{
 						EnqueueSpawnable(tag, actor);
 					}
