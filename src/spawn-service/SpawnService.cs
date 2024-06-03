@@ -25,7 +25,7 @@ namespace UpgradeSystem
 
 		public bool TrySpawn(string tag, Actor spawnPoint, out Actor spawnedActor)
 		{
-			if (SpawnableRegistry.TryGetValue(out Queue<Actor> spawnableQueue))
+			if (SpawnableRegistry.TryGetValue(tag, out Queue<Actor> spawnableQueue))
 			{
 				if (spawnableQueue.TryDequeue(out Actor actor))
 				{
