@@ -5,6 +5,7 @@
 		"emeraldwalk.runonsave",
 		"mark-wiemer.vscode-autohotkey-plus-plus",
 		"knisterpeter.vscode-github",
-		"github.copilot"
+		"github.copilot",
+		"formulahendry.dotnet"
 	]
 }
