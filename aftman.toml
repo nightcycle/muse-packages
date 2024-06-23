@@ -3,4 +3,4 @@
 
 # To add a new tool, add an entry to this table.
 [tools]
-mpm = "nightcycle/muse-package-manager@0.5.2"
+mpm = "nightcycle/muse-package-manager@0.5.3"

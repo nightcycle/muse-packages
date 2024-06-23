@@ -1,0 +1,22 @@
+{
+	"[csharp]": {
+	 	"editor.formatOnSave": true,
+	},
+	"files.autoSave": "onFocusChange",
+	"omnisharp.organizeImportsOnFormat": true,
+	"files.exclude": {
+		"**/MPM*.cs": true,
+		".mpm-cache": true,
+	},
+	"terminal.integrated.defaultProfile.windows": "Git Bash",
+	"editor.folding": true,
+    "editor.showFoldingControls": "always",
+	"emeraldwalk.runonsave": {
+
+		"shell": "C:\\Program Files\\Git\\bin\\bash.exe",
+		"commands": [	
+		]
+	},
+	"terminal.integrated.shellIntegration.history": 1000
+	
+}

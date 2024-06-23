@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"formulahendry.code-runner",
+		"bungcip.better-toml",
+		"emeraldwalk.runonsave",
+		"mark-wiemer.vscode-autohotkey-plus-plus",
+		"knisterpeter.vscode-github",
+		"github.copilot"
+	]
+}
